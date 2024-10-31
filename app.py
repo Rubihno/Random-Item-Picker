@@ -32,12 +32,17 @@ def ophalen():
     with open("opslag.json", "r") as f:
         return json.load(f)
 
+def bestaat_lijst(lijst, data):
+    if lijst not in data:
+        return False
+    return True
+
 lijst = {}
 
 # Maakt een lijst met items en voegt dit dit toe
 def lijst_maken():
     naam = []
-    naam_key = input("Wat wil je toevoegen aan de lijst? Typ series als je series wil toevoegen etc.")
+    naam_key = input("Wat is de naam van de lijst? Typ series als je een lijst met series wil toevoegen etc.")
     aantal = int(input("Hoeveel items wil je toevoegen?"))
     for i in range(aantal):
         optie = input(f"Welke item wil je toevoegen aan de lijst?")
@@ -47,31 +52,37 @@ def lijst_maken():
 
 # Voeg 1 of meerdere items toe
 def item_toevoegen(data):
-    toevoegen_lijst = input("Aan welke lijst wil je een item toevoegen?")
+    lijst = input("Aan welke lijst wil je een item toevoegen?")
+    if bestaat_lijst(lijst, data) == False:
+        return
     aantal = int(input("Hoeveel items wil je toevoegen?"))
     for i in range(aantal):
         toevoegen_item = input("Welk item wil je toevoegen?")
-        data[toevoegen_lijst].append(toevoegen_item)
-    print(data[toevoegen_lijst])
+        data[lijst].append(toevoegen_item)
+    print(data[lijst])
     opslaan(data)
 
 # Delete een lijst of item
 def item_verwijderen(data):
-    volledig_of_item = input("Wil je een item uit een lijst of een hele lijst verwijderen?")
-    if volledig_of_item == "item":
-        verwijderen_lijst = input("Van welke lijst wil je een item verwijderen?")
+    lijst_of_item = input("Wil je een item uit een lijst of een hele lijst verwijderen?")
+    if lijst_of_item == "item":
+        lijst = input("Van welke lijst wil je een item verwijderen?")
+        if bestaat_lijst(lijst, data) == False:
+            return
         item_lijst = input("Welk item wil je verwijderen?")
-        data[verwijderen_lijst].remove(item_lijst)
+        data[lijst].remove(item_lijst)
     else:
         lijst = input("Welke lijst wil je verwijderen?")
+        if bestaat_lijst(lijst, data) == False:
+            return
         del data[lijst] 
     verwijderen_data(data)
 
 def error(actie):
     try:
-        actie
-    except (FileNotFoundError, json.JSONDecodeError, KeyError):
-        print("Deze lijst bestaat niet of er zijn nog geen lijsten toegevoegd!")
+        actie()
+    except(KeyError,FileNotFoundError, json.JSONDecodeError, TypeError):
+        return print("Deze lijst bestaat niet of er zijn nog geen lijsten toegevoegd!")
 
 def random_item():
     item = input("Uit welke lijst wil je een item krijgen?")
@@ -81,14 +92,6 @@ def random_item():
 
 toevoegen_of_random = int(input("Wil je een lijst toevoegen, item toevoegen, random item uit lijst of een lijst/item verwijderen? Typ 0 voor lijst toevoegen, 1 voor item toevoegen etc."))
 data_ophalen = ophalen()
+functies = [lambda: error(lijst_maken),lambda: error(item_toevoegen(data_ophalen)),lambda: error(random_item),lambda: error(item_verwijderen(data_ophalen))]
 
-if toevoegen_of_random == 0: 
-    error(lijst_maken())
-elif toevoegen_of_random == 1:
-    error(item_toevoegen(data_ophalen))
-elif toevoegen_of_random == 2:
-    error(random_item())
-elif toevoegen_of_random == 3:
-    error(item_verwijderen(data_ophalen))
-else:
-    print("Deze optie bestaat niet! Typ 0 voor lijst toevoegen, 1 voor item toevoegen etc.")
+functies[toevoegen_of_random]()
