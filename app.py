@@ -32,9 +32,7 @@ def ophalen():
     with open("opslag.json", "r") as f:
         return json.load(f)
 
-lijst = {}    
-data_opslaan = opslaan(lijst)
-data_ophalen = ophalen()
+lijst = {}
 
 # Maakt een lijst met items en voegt dit dit toe
 def lijst_maken():
@@ -69,6 +67,11 @@ def item_verwijderen(data):
         del data[lijst] 
     verwijderen_data(data)
 
+def error(actie):
+    try:
+        actie
+    except (FileNotFoundError, json.JSONDecodeError, KeyError):
+        print("Deze lijst bestaat niet of er zijn nog geen lijsten toegevoegd!")
 
 def random_item():
     item = input("Uit welke lijst wil je een item krijgen?")
@@ -76,14 +79,16 @@ def random_item():
     print(keuze)
     return keuze
 
-toevoegen_of_random = int(input("Wil je een lijst toevoegen of wil je een random item uit een beschikbare lijst? 0 voor toevoegen, 1 voor random item"))
+toevoegen_of_random = int(input("Wil je een lijst toevoegen, item toevoegen, random item uit lijst of een lijst/item verwijderen? Typ 0 voor lijst toevoegen, 1 voor item toevoegen etc."))
+data_ophalen = ophalen()
 
 if toevoegen_of_random == 0: 
-    lijst_maken()
+    error(lijst_maken())
 elif toevoegen_of_random == 1:
-    try: 
-        random_item()
-    except (json.JSONDecodeError, FileNotFoundError):
-        print("Deze lijst bestaat niet of er zijn nog geen lijsten toegevoegd!")
+    error(item_toevoegen(data_ophalen))
+elif toevoegen_of_random == 2:
+    error(random_item())
+elif toevoegen_of_random == 3:
+    error(item_verwijderen(data_ophalen))
 else:
-    print("Deze optie bestaat niet! U kunt alleen een lijst toevoegen en uit een bestaande lijst een item krijgen.")
+    print("Deze optie bestaat niet! Typ 0 voor lijst toevoegen, 1 voor item toevoegen etc.")

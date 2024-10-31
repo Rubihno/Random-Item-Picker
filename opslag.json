@@ -1,1 +1,14 @@
-{"Films": ["Deadpool", "Wolverine", "Pirates of the Caribbean"]}
+{
+    "Films": [
+        "Deadpool",
+        "Wolverine",
+        "Pirates of the Caribbean"
+    ],
+    "Games": [
+        "League of Legends",
+        "Ashes of Creation",
+        "Call of Duty",
+        "Football Manager",
+        "Cyberpunk"
+    ]
+}
