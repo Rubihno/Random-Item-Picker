@@ -1,0 +1,21 @@
+{
+    "Films": [
+        "Deadpool",
+        "Wolverine",
+        "Pirates of the Caribbean",
+        "Avengers: Endgame"
+    ],
+    "Games": [
+        "League of Legends",
+        "Ashes of Creation",
+        "Call of Duty",
+        "Football Manager",
+        "Cyberpunk",
+        "Crusader Kings 3"
+    ],
+    "Series": [
+        "Vampire Diaries",
+        "How I Met Your Mother",
+        "You"
+    ]
+}
