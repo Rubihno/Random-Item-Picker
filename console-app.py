@@ -8,14 +8,14 @@ def opslaan(data):
             data (list): the list that needs to be saved to the json file
     """
     try:
-        with open("opslag.json", "r") as f:
+        with open("console-opslag.json", "r") as f:
             bestaande_data = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         bestaande_data = {}
 
     bestaande_data.update(data)
 
-    with open("opslag.json", "w") as f:
+    with open("console-opslag.json", "w") as f:
         json.dump(bestaande_data, f, indent=4)
 
 def verwijderen_data(data):
@@ -26,14 +26,14 @@ def verwijderen_data(data):
             data (dict): huidige data van de json file
     """
     try:
-        with open("opslag.json", "w") as f:
+        with open("console-opslag.json", "w") as f:
             json.dump(data, f, indent=4)
     except (FileNotFoundError, json.JSONDecodeError):
         print("File niet gevonden!")
 
 # Laad de huidige data
 def ophalen():
-    with open("opslag.json", "r") as f:
+    with open("console-opslag.json", "r") as f:
         return json.load(f)
 
 def bestaat_lijst(lijst, data):
