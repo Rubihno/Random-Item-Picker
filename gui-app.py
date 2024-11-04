@@ -40,7 +40,7 @@ class MainWindow(QMainWindow):
 
         self.setCentralWidget(central_widget)
 
-        self.add_item.clicked.connect(self.func)
+        self.add_item.clicked.connect(self.text_toevoegen)
         self.list.currentTextChanged.connect(self.text_changed)
 
         self.pick_item.clicked.connect(self.random_item)
@@ -65,16 +65,19 @@ class MainWindow(QMainWindow):
             huidige_data = json.load(f)
         return huidige_data
 
-    def func(self):
+    # Voegt tekst toe aan de lijst en json file indien er tekst aanwezig is
+    def text_toevoegen(self):
         item_text = self.item_tekst.text()
         if item_text:
             self.list.addItem(self.item_tekst.text())
             self.opslaan_items(item_text)
             self.item_tekst.clear()
 
+    # Wordt aangeroepen als de lijst wordt aangepast
     def text_changed(self, text):
         print(text)
 
+    # Laat een random item uit de lijst zien en verwijdert de lijst
     def random_item(self):
         try: 
             random_item = random.choice(self.ophalen_items())
